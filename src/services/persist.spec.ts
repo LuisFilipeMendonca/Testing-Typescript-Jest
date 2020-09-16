@@ -1,15 +1,30 @@
-describe('Testing something', () => {
-  it('Should return number one', () => {
-    const number = 1;
+import { Persist } from './persist';
 
-    expect(number).toBe(1);
+const createSut = () => {
+  return new Persist();
+};
+
+describe('Testing Persist', () => {
+  afterEach(() => jest.clearAllMocks());
+
+  it('Should return undefined', () => {
+    // System under test
+    const sut = createSut();
+
+    expect(sut.saveOrder()).toBeUndefined();
   });
-});
 
-describe('Testing something else', () => {
-  test('Should return string Hello world.', () => {
-    const string = 'Hello world.';
+  it('Should call console.log one time', () => {
+    const sut = createSut();
+    const consoleSpy = jest.spyOn(console, 'log');
+    sut.saveOrder();
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+  });
 
-    expect(string).toBe('Hello world.');
+  it('Should call console.log with value "Your order have been saved"', () => {
+    const sut = createSut();
+    const consoleSpy = jest.spyOn(console, 'log');
+    sut.saveOrder();
+    expect(consoleSpy).toHaveBeenCalledWith('Your order have been saved');
   });
 });
